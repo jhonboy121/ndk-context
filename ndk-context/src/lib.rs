@@ -99,6 +99,14 @@ pub fn android_context() -> AndroidContext {
         .expect("android context was not initialized")
 }
 
+/// The [`AndroidContext`] if it has been initialized, rather than a panic if not.
+///
+/// uplink patch: for library code (our vendored netwatch) that has something else to fall back
+/// on when there is no context.
+pub fn try_android_context() -> Option<AndroidContext> {
+    ANDROID_CONTEXT.get().map(|shared| shared.0)
+}
+
 /// Initializes the [`AndroidContext`].
 ///
 /// uplink patch: the first call wins and later ones are ignored, instead of panicking. The app
